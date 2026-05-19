@@ -1,10 +1,15 @@
 import React from "react";
+import type { StickerConfig } from "../types/sticker";
 import StickerCanvas from "../features/sticker-preview/StickerCanvas";
 
-const PreviewPanel: React.FC = () => {
+interface PreviewPanelProps {
+  config: StickerConfig;
+}
+
+const PreviewPanel: React.FC<PreviewPanelProps> = ({ config }) => {
   return (
     <main className="flex-1 h-full flex flex-col items-center justify-center bg-[#0e0e12] relative overflow-hidden">
-      {/* Subtle grid background */}
+      {/* Grid background */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
@@ -14,17 +19,15 @@ const PreviewPanel: React.FC = () => {
         }}
       />
 
-      {/* Preview label */}
       <p className="absolute top-6 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.3em] text-[#333] uppercase font-mono">
         Preview
       </p>
 
       {/* Sticker canvas */}
       <div className="relative z-10 drop-shadow-[0_0_40px_rgba(57,255,20,0.15)]">
-        <StickerCanvas />
+        <StickerCanvas config={config} />
       </div>
 
-      {/* Bottom hint */}
       <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] tracking-widest text-[#2a2a35] uppercase font-mono">
         320 × 320 — svg
       </p>

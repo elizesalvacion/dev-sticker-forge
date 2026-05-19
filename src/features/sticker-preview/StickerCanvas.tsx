@@ -1,105 +1,51 @@
 import React from "react";
+import type { StickerConfig } from "../../types/sticker";
+import { DEFAULT_STICKER_CONFIG } from "../../constants/defaults";
+import BackgroundLayer from "./layers/BackgroundLayer";
+import TextLayer from "./layers/TextLayer";
+import DecorativeLayer from "./layers/DecorativeLayer";
+import EffectsLayer from "./layers/EffectsLayer";
 
-const StickerCanvas: React.FC = () => {
+interface StickerCanvasProps {
+  config?: StickerConfig;
+}
+
+const CANVAS_WIDTH = 320;
+const CANVAS_HEIGHT = 320;
+
+const StickerCanvas: React.FC<StickerCanvasProps> = ({
+  config = DEFAULT_STICKER_CONFIG,
+}) => {
   return (
     <svg
-      width="320"
-      height="320"
-      viewBox="0 0 320 320"
+      id="sticker-canvas"
+      width={CANVAS_WIDTH}
+      height={CANVAS_HEIGHT}
+      viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Sticker preview canvas"
+      aria-label="Sticker preview"
     >
-      {/* Background shape */}
-      <rect
-        x="10"
-        y="10"
-        width="300"
-        height="300"
-        rx="32"
-        ry="32"
-        fill="#1a1a2e"
-        stroke="#39ff14"
-        strokeWidth="2.5"
+      <BackgroundLayer
+        shape={config.shape}
+        colors={config.colors}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
       />
-
-      {/* Decorative corner accents */}
-      <rect x="18" y="18" width="16" height="3" fill="#39ff14" opacity="0.5" />
-      <rect x="18" y="18" width="3" height="16" fill="#39ff14" opacity="0.5" />
-      <rect x="286" y="18" width="16" height="3" fill="#39ff14" opacity="0.5" />
-      <rect x="299" y="18" width="3" height="16" fill="#39ff14" opacity="0.5" />
-      <rect x="18" y="299" width="16" height="3" fill="#39ff14" opacity="0.5" />
-      <rect x="18" y="286" width="3" height="16" fill="#39ff14" opacity="0.5" />
-      <rect
-        x="286"
-        y="299"
-        width="16"
-        height="3"
-        fill="#39ff14"
-        opacity="0.5"
+      <DecorativeLayer
+        colors={config.colors}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+        elements={config.decorativeElements}
       />
-      <rect
-        x="299"
-        y="286"
-        width="3"
-        height="16"
-        fill="#39ff14"
-        opacity="0.5"
+      <TextLayer
+        text={config.text}
+        subText={config.subText}
+        colors={config.colors}
+        typographyTheme={config.typographyTheme}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
       />
-
-      {/* Placeholder label */}
-      <text
-        x="160"
-        y="148"
-        textAnchor="middle"
-        fontFamily="monospace"
-        fontSize="11"
-        fill="#39ff14"
-        opacity="0.4"
-        letterSpacing="4"
-      >
-        STICKER
-      </text>
-
-      {/* Main placeholder text */}
-      <text
-        x="160"
-        y="178"
-        textAnchor="middle"
-        fontFamily="monospace"
-        fontSize="22"
-        fontWeight="bold"
-        fill="#ffffff"
-        letterSpacing="2"
-      >
-        Dev Sticker
-      </text>
-
-      <text
-        x="160"
-        y="202"
-        textAnchor="middle"
-        fontFamily="monospace"
-        fontSize="22"
-        fontWeight="bold"
-        fill="#39ff14"
-        letterSpacing="2"
-      >
-        Forge
-      </text>
-
-      {/* Bottom tag */}
-      <text
-        x="160"
-        y="270"
-        textAnchor="middle"
-        fontFamily="monospace"
-        fontSize="9"
-        fill="#39ff14"
-        opacity="0.3"
-        letterSpacing="3"
-      >
-        &lt;/placeholder&gt;
-      </text>
+      <EffectsLayer width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
     </svg>
   );
 };
