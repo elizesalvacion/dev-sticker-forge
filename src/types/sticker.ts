@@ -1,5 +1,6 @@
 import type { TypographyThemeKey } from "./typography";
 import type { DecorativeElementKey } from "./decorative";
+import type { ColorThemeKey } from "./colorTheme";
 
 export type ShapeType =
   | "rounded-rect"
@@ -27,4 +28,5 @@ export interface StickerConfig {
   colors: StickerColors;
   typographyTheme: TypographyThemeKey;
   decorativeElements: DecorativeElementKey[];
+  colorTheme: ColorThemeKey;
 }

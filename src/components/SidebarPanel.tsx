@@ -9,6 +9,7 @@ import ExamplePills from "../features/controls/ExamplePills";
 import TypographySelector from "../features/controls/TypographySelector";
 import ShapeSelector from "../features/controls/ShapeSelector";
 import DecorativeSelector from "../features/controls/DecorativeSelector";
+import ColorThemeSelector from "../features/controls/ColorThemeSelector";
 
 interface SidebarPanelProps {
   config: StickerConfig;
@@ -59,7 +60,6 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        {/* Divider */}
         <div className="border-t border-[#2a2a35]" />
 
         {/* Typography */}
@@ -73,7 +73,6 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        {/* Divider */}
         <div className="border-t border-[#2a2a35]" />
 
         {/* Shape */}
@@ -87,7 +86,6 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        {/* Divider */}
         <div className="border-t border-[#2a2a35]" />
 
         {/* Decorative Elements */}
@@ -103,15 +101,27 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        {/* Divider */}
         <div className="border-t border-[#2a2a35]" />
 
-        {/* Remaining placeholders */}
+        {/* Color Themes */}
+        <div className="flex flex-col gap-3">
+          <div className="text-[10px] text-[#555570] uppercase tracking-widest">
+            — Color Theme
+          </div>
+          <ColorThemeSelector
+            value={config.colorTheme}
+            onChange={(val) => onConfigChange({ colorTheme: val })}
+          />
+        </div>
+
+        <div className="border-t border-[#2a2a35]" />
+
+        {/* Coming Soon */}
         <div className="flex flex-col gap-3">
           <div className="text-[10px] text-[#555570] uppercase tracking-widest">
             — Coming Soon
           </div>
-          {["Colors", "Effects"].map((label) => (
+          {["Effects"].map((label) => (
             <div
               key={label}
               className="rounded-md border border-[#2a2a35] bg-[#0e0e12] px-4 py-3
@@ -128,7 +138,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-[#2a2a35] text-[10px] text-[#333] tracking-widest">
-        PHASE 6 — DECORATIVE ELEMENTS
+        PHASE 7 — COLOR THEMES
       </div>
     </aside>
   );
