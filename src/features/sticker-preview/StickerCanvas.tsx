@@ -1,9 +1,10 @@
 import React from "react";
 import type { StickerConfig } from "../../types/sticker";
 import { DEFAULT_STICKER_CONFIG } from "../../constants/defaults";
+import SvgFilters from "./layers/effects/SvgFilters";
 import BackgroundLayer from "./layers/BackgroundLayer";
-import TextLayer from "./layers/TextLayer";
 import DecorativeLayer from "./layers/DecorativeLayer";
+import TextLayer from "./layers/TextLayer";
 import EffectsLayer from "./layers/EffectsLayer";
 
 interface StickerCanvasProps {
@@ -16,6 +17,19 @@ const CANVAS_HEIGHT = 320;
 const StickerCanvas: React.FC<StickerCanvasProps> = ({
   config = DEFAULT_STICKER_CONFIG,
 }) => {
+  const { activeEffects, colors } = config;
+
+  // Determine which filter to apply to the text layer
+  const textFilter = activeEffects.includes("glitch")
+    ? "url(#fx-glitch)"
+    : activeEffects.includes("neon")
+      ? "url(#fx-neon)"
+      : activeEffects.includes("outline")
+        ? "url(#fx-outline)"
+        : activeEffects.includes("shadow")
+          ? "url(#fx-shadow)"
+          : undefined;
+
   return (
     <svg
       id="sticker-canvas"
@@ -25,27 +39,44 @@ const StickerCanvas: React.FC<StickerCanvasProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Sticker preview"
     >
+      {/* SVG filter defs — must be first */}
+      <SvgFilters colors={colors} activeEffects={activeEffects} />
+
+      {/* Layer 1 — Background Shape */}
       <BackgroundLayer
         shape={config.shape}
-        colors={config.colors}
+        colors={colors}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
       />
+
+      {/* Layer 2 — Decorative Elements */}
       <DecorativeLayer
-        colors={config.colors}
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
         elements={config.decorativeElements}
-      />
-      <TextLayer
-        text={config.text}
-        subText={config.subText}
-        colors={config.colors}
-        typographyTheme={config.typographyTheme}
+        colors={colors}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
       />
-      <EffectsLayer width={CANVAS_WIDTH} height={CANVAS_HEIGHT} />
+
+      {/* Layer 3 — Text (with optional filter) */}
+      <g filter={textFilter}>
+        <TextLayer
+          text={config.text}
+          subText={config.subText}
+          colors={colors}
+          width={CANVAS_WIDTH}
+          height={CANVAS_HEIGHT}
+          typographyTheme={config.typographyTheme}
+        />
+      </g>
+
+      {/* Layer 4 — Effects overlays */}
+      <EffectsLayer
+        activeEffects={activeEffects}
+        colors={colors}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+      />
     </svg>
   );
 };

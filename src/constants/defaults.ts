@@ -18,4 +18,5 @@ export const DEFAULT_STICKER_CONFIG: StickerConfig = {
   typographyTheme: DEFAULT_TYPOGRAPHY_KEY,
   decorativeElements: [],
   colorTheme: DEFAULT_COLOR_THEME_KEY,
+  activeEffects: [],
 };

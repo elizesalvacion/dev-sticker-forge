@@ -10,6 +10,7 @@ import TypographySelector from "../features/controls/TypographySelector";
 import ShapeSelector from "../features/controls/ShapeSelector";
 import DecorativeSelector from "../features/controls/DecorativeSelector";
 import ColorThemeSelector from "../features/controls/ColorThemeSelector";
+import EffectsSelector from "../features/controls/EffectsSelector";
 
 interface SidebarPanelProps {
   config: StickerConfig;
@@ -119,26 +120,18 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
         {/* Coming Soon */}
         <div className="flex flex-col gap-3">
           <div className="text-[10px] text-[#555570] uppercase tracking-widest">
-            — Coming Soon
+            — Effects
           </div>
-          {["Effects"].map((label) => (
-            <div
-              key={label}
-              className="rounded-md border border-[#2a2a35] bg-[#0e0e12] px-4 py-3
-                flex items-center justify-between opacity-40 cursor-not-allowed select-none"
-            >
-              <span className="text-xs text-[#888]">{label}</span>
-              <span className="text-[10px] text-[#444] border border-[#333] rounded px-1.5 py-0.5">
-                soon
-              </span>
-            </div>
-          ))}
+          <EffectsSelector
+            value={config.activeEffects}
+            onChange={(val) => onConfigChange({ activeEffects: val })}
+          />
         </div>
       </div>
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-[#2a2a35] text-[10px] text-[#333] tracking-widest">
-        PHASE 7 — COLOR THEMES
+        PHASE 8 — EFFECTS
       </div>
     </aside>
   );
