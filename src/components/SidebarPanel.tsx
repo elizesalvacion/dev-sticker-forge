@@ -131,7 +131,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-[#2a2a35] text-[10px] text-[#333] tracking-widest">
-        PHASE 8 — EFFECTS
+        PHASE 9 — DOWNLOAD SYSTEM
       </div>
     </aside>
   );

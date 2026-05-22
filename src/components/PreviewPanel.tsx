@@ -1,6 +1,7 @@
 import React from "react";
 import type { StickerConfig } from "../types/sticker";
 import StickerCanvas from "../features/sticker-preview/StickerCanvas";
+import DownloadPanel from "../features/export/DownloadPanel";
 
 interface PreviewPanelProps {
   config: StickerConfig;
@@ -19,6 +20,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({ config }) => {
         }}
       />
 
+      {/* Preview label */}
       <p className="absolute top-6 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.3em] text-[#333] uppercase font-mono">
         Preview
       </p>
@@ -28,6 +30,12 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({ config }) => {
         <StickerCanvas config={config} />
       </div>
 
+      {/* Download panel */}
+      <div className="relative z-10 mt-6 w-[320px]">
+        <DownloadPanel stickerText={config.text} />
+      </div>
+
+      {/* Bottom label */}
       <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] tracking-widest text-[#2a2a35] uppercase font-mono">
         320 × 320 — svg
       </p>
