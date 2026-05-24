@@ -1,13 +1,18 @@
 import React from "react";
 import type { StickerConfig } from "../types/sticker";
 import StickerCanvas from "../features/sticker-preview/StickerCanvas";
+import EmptyStateCanvas from "./EmptyStateCanvas";
 import DownloadPanel from "../features/export/DownloadPanel";
+import { useTransition } from "../hooks/useTransition";
 
 interface PreviewPanelProps {
   config: StickerConfig;
 }
 
 const PreviewPanel: React.FC<PreviewPanelProps> = ({ config }) => {
+  const isEmpty = !config.text.trim();
+  const isVisible = useTransition(config.shape, 120);
+
   return (
     <main className="flex-1 h-full flex flex-col items-center justify-center bg-[#0e0e12] relative overflow-hidden">
       {/* Grid background */}
@@ -25,15 +30,20 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({ config }) => {
         Preview
       </p>
 
-      {/* Sticker canvas */}
-      <div className="relative z-10 drop-shadow-[0_0_40px_rgba(57,255,20,0.15)]">
-        <StickerCanvas config={config} />
+      {/* Sticker canvas with fade transition */}
+      <div
+        className="relative z-10 drop-shadow-[0_0_40px_rgba(57,255,20,0.15)] transition-opacity duration-150"
+        style={{ opacity: isVisible ? 1 : 0 }}
+      >
+        {isEmpty ? <EmptyStateCanvas /> : <StickerCanvas config={config} />}
       </div>
 
-      {/* Download panel */}
-      <div className="relative z-10 mt-6 w-[320px]">
-        <DownloadPanel stickerText={config.text} />
-      </div>
+      {/* Download panel — hidden when empty */}
+      {!isEmpty && (
+        <div className="relative z-10 mt-6 w-[320px]">
+          <DownloadPanel stickerText={config.text} />
+        </div>
+      )}
 
       {/* Bottom label */}
       <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] tracking-widest text-[#2a2a35] uppercase font-mono">

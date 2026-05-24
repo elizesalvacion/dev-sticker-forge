@@ -1,22 +1,18 @@
 import React, { useState } from "react";
-import AppLayout from "./components/AppLayout";
+import type { StickerConfig } from "./types/sticker";
 import { DEFAULT_STICKER_CONFIG } from "./constants/defaults";
 import { COLOR_THEMES } from "./constants/colorThemes";
-import type { StickerConfig } from "./types/sticker";
-import type { ColorThemeKey } from "./types/colorTheme";
+import AppLayout from "./components/AppLayout";
 
 const App: React.FC = () => {
   const [config, setConfig] = useState<StickerConfig>(DEFAULT_STICKER_CONFIG);
 
   const updateConfig = (partial: Partial<StickerConfig>) => {
-    // If colorTheme is changing, also update colors to match the theme
+    // If a colorTheme key is being set, also update the colors object
     if (partial.colorTheme) {
-      const theme = COLOR_THEMES.find(
-        (t) => t.key === (partial.colorTheme as ColorThemeKey),
-      );
+      const theme = COLOR_THEMES.find((t) => t.key === partial.colorTheme);
       if (theme) {
-        setConfig((prev) => ({
-          ...prev,
+        partial = {
           ...partial,
           colors: {
             background: theme.background,
@@ -25,8 +21,7 @@ const App: React.FC = () => {
             textSecondary: theme.textSecondary,
             accent: theme.accent,
           },
-        }));
-        return;
+        };
       }
     }
     setConfig((prev) => ({ ...prev, ...partial }));

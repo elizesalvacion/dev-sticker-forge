@@ -2,6 +2,7 @@ import React from "react";
 import type { StickerConfig } from "../types/sticker";
 import type { DecorativeElementKey } from "../types/decorative";
 import { APP_NAME } from "../constants";
+import PresetsPanel from "../features/controls/PresetsPanel";
 import TextInput, {
   PLACEHOLDER_EXAMPLES,
 } from "../features/controls/TextInput";
@@ -16,6 +17,8 @@ interface SidebarPanelProps {
   config: StickerConfig;
   onConfigChange: (partial: Partial<StickerConfig>) => void;
 }
+
+const Divider = () => <div className="border-t border-[#2a2a35]" />;
 
 const SidebarPanel: React.FC<SidebarPanelProps> = ({
   config,
@@ -38,6 +41,19 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
 
       {/* Controls */}
       <div className="flex-1 px-6 py-6 flex flex-col gap-6 overflow-y-auto">
+        {/* Presets */}
+        <div className="flex flex-col gap-3">
+          <div className="text-[10px] text-[#555570] uppercase tracking-widest">
+            — Presets
+          </div>
+          <PresetsPanel
+            onSelect={(preset) => onConfigChange(preset)}
+            currentText={config.text}
+          />
+        </div>
+
+        <Divider />
+
         {/* Text */}
         <div className="flex flex-col gap-4">
           <div className="text-[10px] text-[#555570] uppercase tracking-widest">
@@ -61,7 +77,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        <div className="border-t border-[#2a2a35]" />
+        <Divider />
 
         {/* Typography */}
         <div className="flex flex-col gap-3">
@@ -74,7 +90,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        <div className="border-t border-[#2a2a35]" />
+        <Divider />
 
         {/* Shape */}
         <div className="flex flex-col gap-3">
@@ -87,7 +103,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        <div className="border-t border-[#2a2a35]" />
+        <Divider />
 
         {/* Decorative Elements */}
         <div className="flex flex-col gap-3">
@@ -102,7 +118,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        <div className="border-t border-[#2a2a35]" />
+        <Divider />
 
         {/* Color Themes */}
         <div className="flex flex-col gap-3">
@@ -115,9 +131,9 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           />
         </div>
 
-        <div className="border-t border-[#2a2a35]" />
+        <Divider />
 
-        {/* Coming Soon */}
+        {/* Effects */}
         <div className="flex flex-col gap-3">
           <div className="text-[10px] text-[#555570] uppercase tracking-widest">
             — Effects
@@ -131,7 +147,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-[#2a2a35] text-[10px] text-[#333] tracking-widest">
-        PHASE 9 — DOWNLOAD SYSTEM
+        PHASE 10 — UX POLISH
       </div>
     </aside>
   );
