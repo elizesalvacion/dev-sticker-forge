@@ -46,10 +46,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
           <div className="text-[10px] text-[#555570] uppercase tracking-widest">
             — Presets
           </div>
-          <PresetsPanel
-            onSelect={(preset) => onConfigChange(preset)}
-            currentText={config.text}
-          />
+          <PresetsPanel onSelect={(preset) => onConfigChange(preset)} />
         </div>
 
         <Divider />
