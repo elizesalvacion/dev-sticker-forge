@@ -12,6 +12,7 @@ import ShapeSelector from "../features/controls/ShapeSelector";
 import DecorativeSelector from "../features/controls/DecorativeSelector";
 import ColorThemeSelector from "../features/controls/ColorThemeSelector";
 import EffectsSelector from "../features/controls/EffectsSelector";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 interface SidebarPanelProps {
   config: StickerConfig;
@@ -24,23 +25,37 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
   config,
   onConfigChange,
 }) => {
+  const isMobile = useMediaQuery("(max-width: 767px)");
+
   return (
-    <aside className="w-80 min-w-[280px] h-full flex flex-col border-r border-[#2a2a35] bg-[#13131a] overflow-y-auto">
-      {/* Header */}
-      <div className="px-6 py-5 border-b border-[#2a2a35]">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-green-400 text-lg">⬡</span>
-          <h1 className="text-sm font-bold tracking-widest uppercase text-white">
-            {APP_NAME}
-          </h1>
+    <aside
+      className={`
+      ${isMobile ? "w-full" : "w-80 min-w-[280px]"}
+      h-full flex flex-col border-r border-[#2a2a35] bg-[#13131a] overflow-y-auto
+    `}
+    >
+      {/* Header — hidden on mobile since drawer has its own header */}
+      {!isMobile && (
+        <div className="px-6 py-5 border-b border-[#2a2a35]">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-green-400 text-lg">⬡</span>
+            <h1 className="text-sm font-bold tracking-widest uppercase text-white">
+              {APP_NAME}
+            </h1>
+          </div>
+          <p className="text-xs text-[#555570] tracking-wide">
+            // craft your dev identity
+          </p>
         </div>
-        <p className="text-xs text-[#555570] tracking-wide">
-          // craft your dev identity
-        </p>
-      </div>
+      )}
 
       {/* Controls */}
-      <div className="flex-1 px-6 py-6 flex flex-col gap-6 overflow-y-auto">
+      <div
+        className={`
+        flex-1 px-6 flex flex-col gap-6 overflow-y-auto
+        ${isMobile ? "py-4 pb-8" : "py-6"}
+      `}
+      >
         {/* Presets */}
         <div className="flex flex-col gap-3">
           <div className="text-[10px] text-[#555570] uppercase tracking-widest">
@@ -142,10 +157,12 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="px-6 py-4 border-t border-[#2a2a35] text-[10px] text-[#333] tracking-widest">
-        PHASE 10 — UX POLISH
-      </div>
+      {/* Footer — desktop only */}
+      {!isMobile && (
+        <div className="px-6 py-4 border-t border-[#2a2a35] text-[10px] text-[#333] tracking-widest">
+          PHASE 10 — UX POLISH
+        </div>
+      )}
     </aside>
   );
 };
