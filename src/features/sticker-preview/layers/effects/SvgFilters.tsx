@@ -60,28 +60,124 @@ const SvgFilters: React.FC<SvgFiltersProps> = ({ colors, activeEffects }) => {
 
       {/* Glitch filter — chromatic displacement */}
       {activeEffects.includes("glitch") && (
-        <filter id="fx-glitch" x="-10%" y="-10%" width="120%" height="120%">
+        <filter id="fx-glitch" x="-25%" y="-25%" width="150%" height="150%">
+          {/* Static noise distortion */}
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.01 0.05"
+            numOctaves="1"
+            seed="15"
+            result="noise"
+          />
+
+          {/* Subtle displacement */}
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="5"
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="distorted"
+          />
+
+          {/* RED */}
           <feColorMatrix
+            in="distorted"
             type="matrix"
-            values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"
+            values="
+        1 0 0 0 0
+        0 0 0 0 0
+        0 0 0 0 0
+        0 0 0 1 0
+      "
             result="red"
           />
-          <feOffset in="red" dx="-4" dy="0" result="redShift" />
+          <feOffset in="red" dx="-3" dy="0" result="redShift" />
+
+          {/* CYAN */}
           <feColorMatrix
-            in="SourceGraphic"
+            in="distorted"
             type="matrix"
-            values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
+            values="
+        0 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 1 0
+      "
             result="cyan"
           />
-          <feOffset in="cyan" dx="4" dy="0" result="cyanShift" />
-          <feBlend in="redShift" in2="cyanShift" mode="screen" result="blend" />
+          <feOffset in="cyan" dx="3" dy="0" result="cyanShift" />
+
+          {/* GREEN */}
+          <feColorMatrix
+            in="distorted"
+            type="matrix"
+            values="
+        0 0 0 0 0
+        0 1 0 0 0
+        0 0 0 0 0
+        0 0 0 1 0
+      "
+            result="green"
+          />
+          <feOffset in="green" dx="0" dy="-1" result="greenShift" />
+
+          {/* BLUE */}
+          <feColorMatrix
+            in="distorted"
+            type="matrix"
+            values="
+        0 0 0 0 0
+        0 0 0 0 0
+        0 0 1 0 0
+        0 0 0 1 0
+      "
+            result="blue"
+          />
+          <feOffset in="blue" dx="0" dy="1" result="blueShift" />
+
+          {/* MAGENTA */}
+          <feFlood
+            floodColor="#ff00ff"
+            floodOpacity="0.15"
+            result="magentaFlood"
+          />
+          <feComposite
+            in="magentaFlood"
+            in2="distorted"
+            operator="in"
+            result="magenta"
+          />
+
+          {/* Blend layers progressively */}
+          <feBlend
+            in="redShift"
+            in2="cyanShift"
+            mode="screen"
+            result="blend1"
+          />
+          <feBlend in="blend1" in2="greenShift" mode="screen" result="blend2" />
+          <feBlend in="blend2" in2="blueShift" mode="screen" result="blend3" />
+          <feBlend
+            in="blend3"
+            in2="magenta"
+            mode="lighten"
+            result="glitchColor"
+          />
+
+          {/* Preserve readability */}
+          <feBlend
+            in="SourceGraphic"
+            in2="glitchColor"
+            mode="lighten"
+            result="finalGlitch"
+          />
+
           <feMerge>
-            <feMergeNode in="blend" />
-            <feMergeNode in="SourceGraphic" />
+            <feMergeNode in="finalGlitch" />
           </feMerge>
         </filter>
       )}
-
       {/* Noise texture pattern */}
       {activeEffects.includes("noise") && (
         <filter id="fx-noise">
